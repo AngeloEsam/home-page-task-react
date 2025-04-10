@@ -1,75 +1,97 @@
 import React, { useState } from "react";
-import { Heart, Menu, X } from "lucide-react";
+import { Heart, Menu, X, ArrowLeftRight  } from "lucide-react";
+import Flag from "react-world-flags";
+
+const countries = [
+  "us", "ca", "gb", "fr", "de", "es", "it", "au"
+];
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showFlags, setShowFlags] = useState(false);
 
   return (
-    <header className="bg-white shadow-md py-4">
-      <div className="container mx-auto flex justify-between items-center px-4">
-        {/* Countries Icons */}
-        <div className="flex space-x-2">
-          <span>🇺🇸</span>
-          <span>🇨🇦</span>
-          <span>🇬🇧</span>
-          <span>🇫🇷</span>
-          <span>🇩🇪</span>
-          <span>🇪🇸</span>
-          <span>🇮🇹</span>
-          <span>🇦🇺</span>
+    <header className="bg-white shadow-md py-3">
+      <div className="container mx-auto flex items-center justify-between flex-wrap px-4 gap-y-3">
+        {/* Logo */}
+        <div className="text-xl font-bold">MyStore</div>
+
+        {/* Flags for md+ */}
+        <div className="hidden md:flex items-center gap-2">
+          {countries.map((code) => (
+            <Flag
+              key={code}
+              code={code}
+              style={{ width: 24, height: 16 }}
+              className="rounded shadow"
+              title={code.toUpperCase()}
+            />
+          ))}
         </div>
 
-        {/* Search Bar */}
-        <div className="hidden md:flex items-center space-x-2 w-full max-w-xs lg:max-w-md">
-          <input
-            type="text"
-            placeholder="Search products..."
-            className="px-4 py-2 rounded-lg border border-gray-300 w-full"
-          />
+        {/* Dropdown for flags on mobile */}
+        <div className="relative md:hidden">
+          <button
+            onClick={() => setShowFlags(!showFlags)}
+            className="border px-2 py-1 rounded"
+          >
+            🌐
+          </button>
+          {showFlags && (
+            <div className="absolute right-0 mt-2 bg-white shadow rounded p-2 flex flex-wrap gap-2 z-50">
+              {countries.map((code) => (
+                <Flag
+                  key={code}
+                  code={code}
+                  style={{ width: 24, height: 16 }}
+                  className="rounded shadow"
+                  title={code.toUpperCase()}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
-        <nav className="hidden md:block">
-          <ul className="flex space-x-6 text-gray-600 font-medium">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Shop</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">About</a></li>
-          </ul>
+        {/* Main Menu */}
+        <nav className="hidden md:flex  gap-6 text-gray-700 font-medium">
+          <a href="#">Home</a>
+          <a href="#">Shop</a>
+          <a href="#">Contact</a>
+          <a href="#">About</a>
         </nav>
 
-        <div className="hidden md:flex space-x-4">
-          <span className="flex gap-1">
-            <Heart className="text-gray-500" /> Wishlist
-          </span>
-        </div>
-
-        <div className="md:hidden">
-          <button onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X /> : <Menu />}
-          </button>
+        {/* Icons */}
+        <div className="flex items-center gap-4 text-gray-600">
+          <Heart className="cursor-pointer" />
+          <ArrowLeftRight className="cursor-pointer" />
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button onClick={() => setMenuOpen(!menuOpen)}>
+              {menuOpen ? <X /> : <Menu />}
+            </button>
+          </div>
         </div>
       </div>
 
+      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden px-4 mt-2">
-          <div className="mb-2">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="px-4 py-2 rounded-lg border border-gray-300 w-full"
-            />
-          </div>
-          <ul className="space-y-2 text-gray-600 font-medium">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Shop</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">About</a></li>
-            <li className="flex gap-1 items-center">
-              <Heart className="text-gray-500" /> Wishlist
-            </li>
-          </ul>
-        </div>
-      )}
+  <div className="md:hidden px-4 mt-4">
+    <nav className="flex flex-col items-center justify-center gap-4 text-gray-700 font-semibold text-lg">
+      <a href="#" className="hover:text-blue-600 transition-colors duration-200">
+        Home
+      </a>
+      <a href="#" className="hover:text-blue-600 transition-colors duration-200">
+        Shop
+      </a>
+      <a href="#" className="hover:text-blue-600 transition-colors duration-200">
+        Contact
+      </a>
+      <a href="#" className="hover:text-blue-600 transition-colors duration-200">
+        About
+      </a>
+    </nav>
+  </div>
+)}
     </header>
   );
 };
